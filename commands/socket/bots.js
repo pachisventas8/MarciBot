@@ -21,19 +21,16 @@ export default {
     const mainBotJid = global.client.user.id.split(':')[0] + '@s.whatsapp.net'
     const isMainBotInGroup = groupParticipants.includes(mainBotJid)
     const basePath = path.join(dirname, '../../Sessions')
-    const folders = { Subs: 'Subs' }
     const getBotsFromFolder = (folderName) => {
       const folderPath = path.join(basePath, folderName)
       if (!fs.existsSync(folderPath)) return []
       return fs.readdirSync(folderPath).filter((dir) => {
           const credsPath = path.join(folderPath, dir, 'creds.json')
           return fs.existsSync(credsPath)
-        }).map((id) => id.replace(/\D/g, '')) // Normaliza a solo números
+        }).map((id) => id.replace(/\D/g, ''))
     }
-    const subs = getBotsFromFolder(folders.Subs)
-    const mods = getBotsFromFolder(folders.Mods)
-    const prems = getBotsFromFolder(folders.Prems)
-    const categorizedBots = { Owner: [], Mod: [], Premium: [], Sub: [] }
+    const subs = getBotsFromFolder('Subs')
+    const categorizedBots = { Owner: [], Sub: [] }
     const mentionedJid = []
     const formatBot = (number, label) => {
       const jid = number + '@s.whatsapp.net'
@@ -61,9 +58,7 @@ export default {
       Sub: subs.length,
     }
     const totalBots = totalCounts.Owner + totalCounts.Sub
-    const totalInGroup =
-      categorizedBots.Owner.length +
-      categorizedBots.Sub.length
+    const totalInGroup = categorizedBots.Owner.length + categorizedBots.Sub.length
     let message = `ꕥ Números de Sockets activos *(${totalBots})*\n\n`
     message += `❖ Principales › *${totalCounts.Owner}*\n`
     message += `✿ Subs › *${totalCounts.Sub}*\n\n`
