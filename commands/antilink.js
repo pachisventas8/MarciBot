@@ -10,6 +10,8 @@ const groupAdmins = participants.filter(p => p.admin).map(p => p.phoneNumber || 
 const isAdmin = groupAdmins.includes(m.sender)
 const botId = client.user.id.split(':')[0] + '@s.whatsapp.net'
 const isBotAdmin = groupAdmins.includes(botId)
+const isSelf = global.db.data.settings[botId]?.self ?? false
+if (isSelf) return
 const chat = global?.db?.data?.chats?.[m.chat]
 const primaryBotId = chat?.primaryBot
 const isPrimary = !primaryBotId || primaryBotId === botId
